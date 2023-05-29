@@ -6,7 +6,10 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror
 RM = rm -f
 SRC =	main.c \
-		error.c
+		error.c \
+		filepath.c \
+		input_process.c \
+		output_process.c
 OBJ = $(SRC:.c=.o)
 
 all: $(NAME)

@@ -27,6 +27,11 @@ typedef struct s_pipex
 	int		status;
 }				t_pipex;
 
-int	ft_error(char *str, int fd);
+int		ft_error(char *str, int fd);
+char	*get_filepath(char *cmd, char **env);
+char	*get_exactpath(char **split_pathes, char *cmd);
+char	*get_filepathes(char **env);
+void	free_other(char **strarr , size_t necesseary);
+void	input_process(char **av, char **env, int *pipefd);
 
 #endif
