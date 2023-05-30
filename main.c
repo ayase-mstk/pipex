@@ -4,6 +4,7 @@ int	main(int ac, char **av, char **env)
 {
 	int	pipefd[2];
 	pid_t	input_pid;
+	int		status;
 	// pid_t	pid_output;
 
 	// printf("exact_path = %s\n", get_filepath(av[2], env));
@@ -20,7 +21,8 @@ int	main(int ac, char **av, char **env)
 	// char *cmd[] = {"/bin/ls", "-l", NULL};
 	// execve("/bin/ls", cmd, NULL);
 	write(STDOUT_FILENO, av[1], ft_strlen(av[1]));
-	waitpid(input_pid, NULL, 0);
+	if (wait(&status) == -1)
+		ft_error(strerror(errno), 2);
 	return (0);
 
 	if (ac != 5)
