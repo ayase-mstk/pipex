@@ -6,7 +6,7 @@
 #    By: mahayase <mahayase@student.42.jp>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/11 18:32:45 by mahayase          #+#    #+#              #
-#    Updated: 2023/05/29 18:55:26 by mahayase         ###   ########.fr        #
+#    Updated: 2023/05/30 19:28:26 by mahayase         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,6 +42,7 @@ SRCS = 	ft_atoi.c \
 		ft_strlen.c \
 		ft_strmapi.c \
 		ft_strncmp.c \
+		ft_strndup.c \
 		ft_strnstr.c \
 		ft_strptrjoin.c \
 		ft_strptrlen.c \

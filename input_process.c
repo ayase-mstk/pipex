@@ -1,23 +1,49 @@
 #include "pipex.h"
 
+bool	check_option(char *s)
+{
+	int	i;
+
+	i = 0;
+	while (s[i])
+	{
+		if (s[i] == '-')
+			return (true);
+		i++;
+	}
+	return (false);
+}
+
+char	**make_argv(char **av, int	check, char	*exact_path)
+{
+	char	**argv;
+	int		size;
+	int		i;
+
+	if (check_option(av[check]))
+		size = 4;
+	else
+		size = 3;
+	argv = malloc(sizeof(char *) * size);
+	i = 0;
+	argv[i++] = ft_strdup(exact_path);
+	if (size == 4)
+		argv[i++] = ft_strdup(ft_strrchr(av[check], '-'));
+	argv[i++] = ft_strdup(av[check - 1]);
+	argv[i] = NULL;
+	return (argv);
+}
+
 void	input_process(char **av, char **env, int *pipefd)
 {
 	char	*exact_path;
-	// char	buf;
-	// int		ret;
 
 	dup2(pipefd[0], STDIN_FILENO);
+	dup2(pipefd[1], STDOUT_FILENO);
 	close(pipefd[0]);
 	close(pipefd[1]);
-	// while ((ret = read(pipefd[0], &buf, 1)) > 0)
-	// {
-	// 	if (ret < 0)
-	// 		ft_error(strerror(errno), 2);
-	// 	write(0, &buf, ret);
-	// }
 	exact_path = get_filepath(av[2], env);
-	char	*argv[] = {exact_path, NULL};
-	execve(exact_path, argv, NULL);
+	execve(exact_path, make_argv(av, 2, exact_path), NULL);
 	printf("exact_path = %s\n", exact_path);
 	exit (0);
 }

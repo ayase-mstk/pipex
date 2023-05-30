@@ -8,6 +8,7 @@
 # include <sys/types.h>
 # include <stdio.h>
 # include <string.h>
+# include <stdbool.h>
 # include <errno.h>
 # include "libft/libft.h"
 # include "libftprintf/ft_printf.h"

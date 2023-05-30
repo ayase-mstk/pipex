@@ -26,10 +26,7 @@ char	*get_filepathes(char **env)
 	while (i < ft_strptrlen(env))
 	{
 		if (!ft_strncmp(env[i], PATH, 4))
-		{
-			// printf("PATH = %s\n", &env[i][5]);
 			return (&env[i][5]);
-		}
 		i++;
 	}
 	return (NULL);
@@ -40,18 +37,21 @@ char *get_exactpath(char **split_pathes, char *cmd)
 	char	*tmp_path;
 	char	*tmp_path2;
 	char	*path;
+	char	*cmd_nooption;
 	size_t	i;
 
 	i = 0;
+	cmd_nooption = ft_strndup(cmd, ft_strchr(cmd, ' ') - cmd);
 	while (i < ft_strptrlen(split_pathes))
 	{
 		tmp_path = split_pathes[i];
-		split_pathes[i] = ft_strjoin(split_pathes[i], (tmp_path2 = ft_strjoin("/", cmd)));
+		split_pathes[i] = ft_strjoin(split_pathes[i], (tmp_path2 = ft_strjoin("/", cmd_nooption)));
 		free(tmp_path);
 		free(tmp_path2);
 		// printf("split_pathes[%zu] = %s\n", i, split_pathes[i]);
 		i++;
 	}
+	free(cmd_nooption);
 	while (i-- >= 0)
 	{
 		if (access(split_pathes[i], F_OK) == 0)

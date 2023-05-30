@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mahayase <mahayase@student.42tokyo.>       +#+  +:+       +#+        */
+/*   By: mahayase <mahayase@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 16:35:42 by mahayase          #+#    #+#             */
-/*   Updated: 2023/01/11 18:33:10 by mahayase         ###   ########.fr       */
+/*   Updated: 2023/05/30 19:32:47 by mahayase         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,24 +44,6 @@ static size_t	ft_endpoint(char const *str, char const *charset)
 	while (ft_strstr(charset, str[i]) == 1)
 		i--;
 	return (i + 1);
-}
-
-static char	*ft_strndup(char const *src, size_t size)
-{
-	char		*p;
-	size_t		i;
-
-	i = 0;
-	p = (char *)malloc(sizeof(char) * (size + 1));
-	if (p == NULL)
-		return (NULL);
-	while (i < size)
-	{
-		p[i] = src[i];
-		i++;
-	}
-	p[i] = '\0';
-	return (p);
 }
 
 char	*ft_strtrim(char const *s1, char const *set)

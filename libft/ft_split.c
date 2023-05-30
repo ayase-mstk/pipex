@@ -6,7 +6,7 @@
 /*   By: mahayase <mahayase@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 14:34:15 by mahayase          #+#    #+#             */
-/*   Updated: 2023/05/29 19:05:51 by mahayase         ###   ########.fr       */
+/*   Updated: 2023/05/30 19:31:47 by mahayase         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,24 +42,6 @@ static size_t	ft_cntsize(char	const *str, char c)
 		i = end + 1;
 	}
 	return (cnt);
-}
-
-static char	*ft_strndup(char const *src, size_t size)
-{
-	char	*p;
-	size_t	i;
-
-	i = 0;
-	p = (char *)malloc(sizeof(char) * (size + 1));
-	if (p == NULL)
-		return (NULL);
-	while (i < size)
-	{
-		p[i] = src[i];
-		i++;
-	}
-	p[i] = '\0';
-	return (p);
 }
 
 static char	**ft_freeall(char **strarr, char const *s)
