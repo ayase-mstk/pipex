@@ -1,37 +1,53 @@
 NAME = pipex
-LIBFT_DIR = libft
-PRINTF_DIR = libftprintf
-LIBS = -L$(LIBFT_DIR) -lft -L$(PRINTF_DIR) -lftprintf
+
+SRCS_DIR = ./srcs/
+SRCS =	\
+	error.c \
+	filepath.c \
+	input_process.c \
+	main.c \
+	output_process.c
+
+OBJ_DIR = ./obj/
+OBJS = $(SRCS:%.c=$(OBJ_DIR)%.o)
+
+# DEPS	=	$(addprefix $(OBJ_DIR)/, $(SRCS:.c=.d))
+
+LIBFT = libft/libft.a
+LIBFT_DIR = libft/
+PRINTF = libftprintf/libftprintf.a
+PRINTF_DIR = libftprintf/
+LIBS = $(LIBFT) $(PRINTF)
+
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
-RM = rm -f
-SRC =	main.c \
-		error.c \
-		filepath.c \
-		input_process.c \
-		output_process.c
-OBJ = $(SRC:.c=.o)
+CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g
+RM = rm -rf
 
-all: $(NAME)
+all: $(OBJ_DIR) $(NAME)
 
-$(NAME): $(OBJ)
+$(OBJ_DIR):
+	mkdir -p obj
+
+$(OBJ_DIR)%.o: %.c
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+$(NAME): $(OBJS)
 	make -C $(LIBFT_DIR)
 	make -C $(PRINTF_DIR)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LIBS)
-
-.c.o:
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIBS)
 
 clean:
-	make clean -C $(LIBFT_DIR)
-	make clean -C $(PRINTF_DIR)
-	$(RM) $(OBJ)
+	make -C $(LIBFT_DIR) clean
+	make -C $(PRINTF_DIR) clean
+	$(RM) $(OBJ_DIR)
 
 fclean: clean
-	make fclean -C $(LIBFT_DIR)
-	make fclean -C $(PRINTF_DIR)
-	$(RM) $(NAME) $(OBJ)
+	make -C $(LIBFT_DIR) fclean
+	make -C $(PRINTF_DIR) fclean
+	$(RM) $(NAME)
 
 re: fclean all
 
-.PHONY: all clean fclean re
+-include $(DEPS)
+
+.PHONY: all fclean clean re

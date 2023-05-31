@@ -1,5 +1,20 @@
 #include "pipex.h"
 
+void	free_all(char **strarr)
+{
+	size_t	i;
+
+	i = 0;
+	while (strarr[i])
+	{
+		free(strarr[i]);
+		strarr[i] = NULL;
+		i++;
+	}
+	free(strarr);
+	strarr = NULL;
+}
+
 void	free_other(char **strarr , size_t necesseary)
 {
 	size_t	i;
@@ -41,7 +56,13 @@ char *get_exactpath(char **split_pathes, char *cmd)
 	size_t	i;
 
 	i = 0;
-	cmd_nooption = ft_strndup(cmd, ft_strchr(cmd, ' ') - cmd);
+	if (ft_strchr(cmd, ' ') == NULL)
+		cmd_nooption = ft_strdup(cmd);
+	else
+		cmd_nooption = ft_strndup(cmd, ft_strchr(cmd, ' ') - cmd);
+	// printf("ft_strchr(cmd, ' ') - cmd = %zu\n", ft_strchr(cmd, ' ') - cmd);
+	// printf("cmd - ft_strchr(cmd, ' ') = %zu\n", cmd - ft_strchr(cmd, ' '));
+	// printf("cmd_nooption = %s\n", cmd_nooption);
 	while (i < ft_strptrlen(split_pathes))
 	{
 		tmp_path = split_pathes[i];
@@ -61,6 +82,8 @@ char *get_exactpath(char **split_pathes, char *cmd)
 			return (path);
 		}
 	}
+	free_all(split_pathes);
+	ft_error("Error: command not found\n", 1);
 	return (NULL);
 }
 

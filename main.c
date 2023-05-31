@@ -2,36 +2,45 @@
 
 int	main(int ac, char **av, char **env)
 {
-	int	pipefd[2];
-	pid_t	input_pid;
-	int		status;
-	// pid_t	pid_output;
-
-	// printf("exact_path = %s\n", get_filepath(av[2], env));
-	if (pipe(pipefd) == -1)
-		ft_error(strerror(errno), 2);
-	if ((input_pid = fork()) == -1)
-		ft_error(strerror(errno), 2);
-	if (input_pid == 0)
-		input_process(av, env, pipefd);
-	// 親プロセス
-	dup2(pipefd[1], STDOUT_FILENO);
-	close(pipefd[0]);
-	close(pipefd[1]);
-	// char *cmd[] = {"/bin/ls", "-l", NULL};
-	// execve("/bin/ls", cmd, NULL);
-	write(STDOUT_FILENO, av[1], ft_strlen(av[1]));
-	if (wait(&status) == -1)
-		ft_error(strerror(errno), 2);
-	return (0);
+	int		fd[2];
+	int		pipefd[2];
+	pid_t	pid1;
+	// int		status;
+	pid_t	pid2;
 
 	if (ac != 5)
 		ft_error("Error: wrong number of arguments\n", 1);
+	fd[0] = open(av[1], O_RDONLY);
+	fd[1] = open(av[4], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (pipe(pipefd) == -1)
+		ft_error(strerror(errno), 2);
+	// output process
+	if ((pid2 = fork()) == -1)
+		ft_error(strerror(errno), 2);
+	if (pid2 == 0)
+		output_process(av, env, fd, pipefd);
+	// input process
+	if ((pid1 = fork()) == -1)
+		ft_error(strerror(errno), 2);
+	if (pid1 == 0)
+	{
+		waitpid(pid2, NULL, 0);
+		input_process(av, env, fd, pipefd);
+	}
+	// 親プロセス
+	close(fd[0]);
+	close(fd[1]);
+	close(pipefd[0]);
+	close(pipefd[1]);
+	waitpid(pid1, NULL, 0);
+	waitpid(pid2, NULL, 0);
+	return (0);
+
 	// if (access(av[1], R_OK) || access(av[3], W_OK))
 	// 	ft_error(strerror(errno), 2);
 	// if ((fd = open(av[1], O_RDONLY)) < 0)
 	// 	ft_error(strerror(errno), 2);
-	return (0);
+	// return (0);
 }
 
 // usage of strerror
