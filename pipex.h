@@ -34,7 +34,7 @@ char	*get_exactpath(char **split_pathes, char *cmd);
 char	*get_filepathes(char **env);
 void	free_other(char **strarr , size_t necesseary);
 char	**make_argv(char **av, int	check, char	*exact_path);
-void	input_process(char **av, char **env, int *filefd, int *pipefd);
-void	output_process(char **av, char **env, int *filefd, int *pipefd);
+void	input_process(char **av, char **env, int filefd, int *pipefd);
+void	output_process(char **av, char **env, int filefd, int *pipefd);
 
 #endif

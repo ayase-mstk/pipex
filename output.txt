@@ -1,0 +1,4 @@
+char *cmd1[] = {"cat", "test2.c", NULL};
+char *cmd2[] = {"head", "-n", "10", NULL};
+char *cmd3[] = {"grep", "char", NULL};
+char **cmds[] = {cmd1, cmd2, cmd3};

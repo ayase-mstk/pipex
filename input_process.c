@@ -17,8 +17,10 @@ bool	check_option(char *s)
 char	**make_argv(char **av, int	check, char	*exact_path)
 {
 	char	**argv;
+	char	**split;
 	int		size;
 	int		i;
+	int		j;
 
 	if (check_option(av[check]))
 		size = 4;
@@ -27,23 +29,30 @@ char	**make_argv(char **av, int	check, char	*exact_path)
 	argv = malloc(sizeof(char *) * size);
 	i = 0;
 	argv[i++] = ft_strdup(exact_path);
+	split = ft_split(av[check], ' ');
 	if (size == 4)
-		argv[i++] = ft_strdup(ft_strrchr(av[check], '-'));
-	argv[i++] = ft_strdup(av[check - 1]);
+	{
+		j = 1;
+		while (split[j])
+		{
+			argv[i++] = split[j++];
+		}
+	}
+	if (check - 1 == 1)
+		argv[i++] = ft_strdup(av[1]);
 	argv[i] = NULL;
 	return (argv);
 }
 
-void	input_process(char **av, char **env, int *filefd, int *pipefd)
+void	input_process(char **av, char **env, int filefd, int *pipefd)
 {
 	char	*exact_path;
 
-	dup2(filefd[1], STDOUT_FILENO);
-	close(filefd[0]);
-	close(filefd[1]);
+	close(pipefd[1]);
+	dup2(filefd, STDOUT_FILENO);
+	close(filefd);
 	dup2(pipefd[0], STDIN_FILENO);
 	close(pipefd[0]);
-	close(pipefd[1]);
 	// exact_path = get_filepath(av[3], env);
 	printf("av[3] = %s\n", av[3]);
 	printf("env = %s\n", env[0]);
